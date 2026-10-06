@@ -7,7 +7,7 @@ public class IntegerArrayList implements IntegerList{
         size = 0;
     }
 
-    public void add(Integer val){
+    private void resize(){
         if (size == values.length){
             Integer[] newArray = new Integer[values.length*2];
             for(int i =0; i<values.length; i++){
@@ -15,8 +15,23 @@ public class IntegerArrayList implements IntegerList{
             }
             values = newArray;
         }
+    }
 
+    public void add(Integer val){
+        resize();
         values[size]=val;
+        size++;
+    }
+
+    public void add(int index, Integer val){
+        if (index<0 || index>size){
+            throw new IndexOutOfBoundsException("invalidPositiveIndex");
+        }
+            resize();
+        for(int i=size;i>index;i--){
+            values[i]=values[i-1];
+        }
+        values[index]=val;
         size++;
     }
 
@@ -44,9 +59,55 @@ public class IntegerArrayList implements IntegerList{
     public String toString(){
         String result = "[";
         for (int i = 0; i<size-1; i++){
-            result+=values[i] = ", ";
+            result+=values[i] + ", ";
         }
         result+= values[size-1] + "]";
         return result;
     }
+
+    public int indexOf(Integer val){
+        for (int i=0; i<values.length; i++){
+            if (values[i]==val){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public boolean contains(Integer val){
+        if(indexOf(val)==-1){
+            return false;
+        }
+        return true;
+    }
+
+    public Integer get(int index){
+        if (index<0 || index>=size()){
+            throw new IndexOutOfBoundsException("invalidPositiveIndex");
+        }
+        return values[index];
+    }
+
+    public boolean equals(List<Integer> other){
+        if(other.size() != values.length){
+            return false;
+        }
+        for(int i=0; i<values.length;i++){
+            if(other.get(i)!=values[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+    public Integer remove(int index){
+        if(index<0 || index>=values.length){
+            throw new IndexOutOfBoundsException("Index out of Bounds");
+        }
+        Integer removedVal=values[index];
+        for(int i=index; i<values.length; i++){
+            values[i]=values[i+1];
+        }
+        return removedVal;
+    }
+
 }
