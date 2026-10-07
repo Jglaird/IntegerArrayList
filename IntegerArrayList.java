@@ -61,7 +61,10 @@ public class IntegerArrayList implements IntegerList{
         for (int i = 0; i<size-1; i++){
             result+=values[i] + ", ";
         }
-        result+= values[size-1] + "]";
+        if (size >0) {
+            result += values[size - 1];
+        }
+        result+="]";
         return result;
     }
 
@@ -89,24 +92,27 @@ public class IntegerArrayList implements IntegerList{
     }
 
     public boolean equals(List<Integer> other){
-        if(other.size() != values.length){
+        if(other.size() != size){
             return false;
         }
-        for(int i=0; i<values.length;i++){
-            if(other.get(i)!=values[i]){
-                return false;
+        else{
+            for(int i=0; i<size;i++){
+                if(!(other.get(i).equals(values[i]))){
+                    return false;
+                }
             }
         }
         return true;
     }
     public Integer remove(int index){
-        if(index<0 || index>=values.length){
+        if(index<0 || index>=size){
             throw new IndexOutOfBoundsException("Index out of Bounds");
         }
         Integer removedVal=values[index];
-        for(int i=index; i<values.length; i++){
+        for(int i=index; i<values.length-1; i++){
             values[i]=values[i+1];
         }
+        size--;
         return removedVal;
     }
 
